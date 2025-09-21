@@ -16,8 +16,8 @@ import json
 
 # Data to write
 kaggle_credentials = {
-    "username": "ineshs21",
-    "key": "19640032a6e57339898f473e2087f918"
+    "username": "ADD YOUR KAGGLE USERNAME",
+    "key": "ADD YOUR API KEY"
 }
 
 # Write to kaggle.json

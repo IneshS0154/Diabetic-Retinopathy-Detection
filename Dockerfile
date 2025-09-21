@@ -1,8 +1,9 @@
 FROM python:3.10-slim
 
+
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
-    git wget curl libgl1-mesa-glx \
+    git wget curl libgl1 \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Python dependencies

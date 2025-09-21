@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Diabetic Retinopathy Detection API
 
 This is a FastAPI service that loads a trained PyTorch model (`dr_model.pth`) 
@@ -12,3 +13,7 @@ Example with `curl`:
 ```bash
 curl -X POST -F "file=@test.jpg" https://username-dr-docker-space.hf.space/predict/
     
+=======
+# Diabetic-Retinopathy-Detection
+ML image based model for detect Diabetic Retinopathy
+>>>>>>> 5bbeb8c205da9ed592b7721c16bc7768dd96366c

@@ -1,19 +1,97 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Diabetic Retinopathy Detection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            width: 400px;
+            text-align: center;
+        }
+        h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        input[type="file"] {
+            margin: 20px 0;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        #preview {
+            margin-top: 15px;
+            max-width: 100%;
+            border-radius: 8px;
+        }
+        .stage-label {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 8px;
+            color: white;
+            font-weight: bold;
+        }
+        .NoDR { background-color: #2ecc71; }          /* Green */
+        .Mild { background-color: #f1c40f; }          /* Yellow */
+        .Moderate { background-color: #e67e22; }      /* Orange */
+        .Severe { background-color: #e74c3c; }        /* Red */
+        .Proliferative { background-color: #8e44ad; } /* Purple */
+    </style>
 </head>
 <body>
-    <h2>Upload Fundus Image</h2>
-    <form id="uploadForm">
-        <input type="file" id="fileInput" name="file" required><br><br>
-        <input type="submit" value="Predict">
-    </form>
-
-    <h3 id="result"></h3>
+    <div class="container">
+        <h2>Diabetic Retinopathy Detection</h2>
+        <form id="uploadForm">
+            <input type="file" id="fileInput" name="file" accept="image/*" required><br>
+            <button type="submit">Predict</button>
+        </form>
+        <img id="preview" src="#" alt="Image Preview" style="display:none;">
+        <div id="result"></div>
+    </div>
 
     <script>
         const form = document.getElementById('uploadForm');
+        const preview = document.getElementById('preview');
+        const resultEl = document.getElementById('result');
+
+        // Show image preview
+        document.getElementById('fileInput').addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if(file){
+                const reader = new FileReader();
+                reader.onload = () => {
+                    preview.src = reader.result;
+                    preview.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
 
@@ -21,18 +99,28 @@
             const formData = new FormData();
             formData.append('file', fileInput.files[0]);
 
-            const resultEl = document.getElementById('result');
-            resultEl.innerText = "Predicting...";
+            resultEl.innerHTML = "Predicting...";
 
             try {
-                const response = await fetch('https://inesh-diabetic-retinopathy-detection.hf.space/predict/', {  //add your api key to access
+                const response = await fetch('https://inesh-diabetic-retinopathy-detection.hf.space/predict/', { // replace with your public API URL
                     method: 'POST',
                     body: formData
                 });
 
                 const data = await response.json();
-                console.log(data); //log
-                resultEl.innerText = "Prediction: " + data.stage + " (class " + data.prediction + ")";
+                
+                // Map stage to CSS class
+                let stageClass = "";
+                switch(data.stage){
+                    case "No DR": stageClass="NoDR"; break;
+                    case "Mild": stageClass="Mild"; break;
+                    case "Moderate": stageClass="Moderate"; break;
+                    case "Severe": stageClass="Severe"; break;
+                    case "Proliferative DR": stageClass="Proliferative"; break;
+                    default: stageClass="";
+                }
+
+                resultEl.innerHTML = `Prediction: <span class="stage-label ${stageClass}">${data.stage}</span> (class ${data.prediction})`;
 
             } catch (err) {
                 resultEl.innerText = "Error: " + err;

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Diabetic Retinopathy Detection</title>
+</head>
+<body>
+    <h2>Upload Fundus Image</h2>
+    <form id="uploadForm">
+        <input type="file" id="fileInput" name="file" required><br><br>
+        <input type="submit" value="Predict">
+    </form>
+
+    <h3 id="result"></h3>
+
+    <script>
+        const form = document.getElementById('uploadForm');
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const fileInput = document.getElementById('fileInput');
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+
+            const resultEl = document.getElementById('result');
+            resultEl.innerText = "Predicting...";
+
+            try {
+                const response = await fetch('https://inesh-diabetic-retinopathy-detection.hf.space/predict/', {  
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+                resultEl.innerText = "Prediction: " + data.stage + " (class " + data.prediction + ")";
+
+            } catch (err) {
+                resultEl.innerText = "Error: " + err;
+            }
+        });
+    </script>
+</body>
+</html>

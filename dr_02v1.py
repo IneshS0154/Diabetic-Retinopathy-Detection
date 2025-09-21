@@ -143,7 +143,7 @@ sampler = WeightedRandomSampler(sample_weights, len(sample_weights)) # sample mo
 
 train_loader = DataLoader(
     train_dataset,
-    batch_size=512,      # try 512 first, maybe 1024 if it fits
+    batch_size=512,      
     sampler=sampler,
     num_workers=8,
     pin_memory=True,
@@ -152,7 +152,7 @@ train_loader = DataLoader(
 
 val_loader = DataLoader(
     val_dataset,
-    batch_size=512,      # bigger is fine (no gradients)
+    batch_size=512,      
     shuffle=False,
     num_workers=4,
     pin_memory=True
@@ -160,7 +160,7 @@ val_loader = DataLoader(
 
 test_loader = DataLoader(
     test_dataset,
-    batch_size=512,      # bigger is fine (no gradients)
+    batch_size=512,     
     shuffle=False,
     num_workers=4,
     pin_memory=True
@@ -229,7 +229,7 @@ for epoch in range(num_epochs):
     with torch.no_grad():
         for inputs, labels in val_loader:
             inputs, labels = inputs.to(device), labels.to(device)
-            with autocast(device_type='cuda', dtype=torch.float16): # Corrected line
+            with autocast(device_type='cuda', dtype=torch.float16): 
                 outputs = model(inputs)
                 val_loss += criterion(outputs, labels).item() * inputs.size(0)
 
@@ -293,10 +293,6 @@ from sklearn.metrics import accuracy_score, cohen_kappa_score, confusion_matrix,
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-# Assuming you've already loaded the best model and made predictions on the test set:
-# model.load_state_dict(torch.load('/content/drive/MyDrive/best_dr_model.pth'))
-# model.eval()
-# ... (prediction loop to get test_trues and test_preds)
 
 # --- Calculate and print metrics ---
 

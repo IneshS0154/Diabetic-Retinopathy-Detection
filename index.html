@@ -25,7 +25,7 @@
             resultEl.innerText = "Predicting...";
 
             try {
-                const response = await fetch('https://inesh-diabetic-retinopathy-detection.hf.space/predict/', {  
+                const response = await fetch('https://inesh-diabetic-retinopathy-detection.hf.space/predict/', {  //add your api key to access
                     method: 'POST',
                     body: formData
                 });

@@ -5,7 +5,7 @@
     <title>Diabetic Retinopathy Detection</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: Helvetica;
             background: #f4f6f8;
             display: flex;
             justify-content: center;
@@ -27,6 +27,7 @@
         input[type="file"] {
             margin: 20px 0;
         }
+        
         button {
             background-color: #4CAF50;
             color: white;
@@ -67,10 +68,13 @@
     <div class="container">
         <h2>Diabetic Retinopathy Detection</h2>
         <form id="uploadForm">
+            <center>
             <input type="file" id="fileInput" name="file" accept="image/*" required><br>
-            <button type="submit">Predict</button>
+            <img id="preview" src="#" alt="Image Preview" style="display:none;"><br>
+            </center>
+            <button type="submit" class="btn1">Submit</button>
         </form>
-        <img id="preview" src="#" alt="Image Preview" style="display:none;">
+        
         <div id="result"></div>
     </div>
 
